@@ -9,7 +9,8 @@ contract StarNotary is ERC721 {
     }
 
 //  Add a name and a symbol for your starNotary tokens
-
+    string public constant name = "starNotary Token";
+    string public constant symbol = "SNT";
 //
 
     mapping(uint256 => Star) public tokenIdToStarInfo;
@@ -24,7 +25,9 @@ contract StarNotary is ERC721 {
     }
 
 // Add a function lookUptokenIdToStarInfo, that looks up the stars using the Token ID, and then returns the name of the star.
-
+    function lookUptokenIdToStarInfo(uint256 _tokenId) public view returns (string) {
+        return tokenIdToStarInfo[_tokenId].name;
+    }
 //
 
     function putStarUpForSale(uint256 _tokenId, uint256 _price) public {
@@ -49,15 +52,36 @@ contract StarNotary is ERC721 {
             msg.sender.transfer(msg.value - starCost);
         }
         starsForSale[_tokenId] = 0;
-      }
+    }
 
 // Add a function called exchangeStars, so 2 users can exchange their star tokens...
 //Do not worry about the price, just write code to exchange stars between users.
+    function exchangeStars(uint256 _tokenId1, uint256 _tokenId2) public {
+        address starOwner1 = ownerOf(_tokenId1);
+        address starOwner2 = ownerOf(_tokenId2);
 
+        _removeTokenFrom(starOwner1, _tokenId1);
+        _addTokenTo(starOwner2, _tokenId1);
+        _removeTokenFrom(starOwner2, _tokenId2);
+        _addTokenTo(starOwner1, _tokenId2);
+
+        // approve(starOwner1);
+
+        // transferFrom(starOwner1, starOwner2, _tokenId1);
+        // transferFrom(starOwner2, starOwner1, _tokenId2);
+    }
 //
 
 // Write a function to Transfer a Star. The function should transfer a star from the address of the caller.
 // The function should accept 2 arguments, the address to transfer the star to, and the token ID of the star.
+    function transferStar(address to, uint256 _tokenId) public {
+        address starOwner = ownerOf(_tokenId);
+
+        _removeTokenFrom(starOwner, _tokenId);
+        _addTokenTo(to, _tokenId);
+
+        // transferFrom(msg.sender, to, _tokenId);
+    }
 //
 
 }

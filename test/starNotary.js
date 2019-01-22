@@ -66,5 +66,34 @@ contract('StarNotary', async (accs) => {
   // Write Tests for:
 
 // 1) The token name and token symbol are added properly.
+  it('has correct name', async () => {
+    assert.equal(await instance.name.call(), 'starNotary Token');
+  });
+
+  it('has correct symbol', async () => {
+    assert.equal(await instance.symbol.call(), 'SNT');
+  });
+
 // 2) 2 users can exchange their stars.
+  it('2 users can exchange their stars', async() => {
+    let user1 = accounts[1]
+    let user2 = accounts[2]
+    let starId1 = 6
+    let starId2 = 7
+    await instance.createStar('user1 star', starId1, {from: user1});
+    await instance.createStar('user2 star', starId2, {from: user2});
+    await instance.exchangeStars(starId1, starId2, {from: user1});
+    assert.equal(await instance.ownerOf.call(starId1), user2);
+    assert.equal(await instance.ownerOf.call(starId2), user1);
+    // assert.equal(await instance.tokenIdToStarInfo.call(starId1), 'user2 star');
+    // assert.equal(await instance.tokenIdToStarInfo.call(starId2), 'user1 star');
+  });
 // 3) Stars Tokens can be transferred from one address to another.
+  it('Stars Tokens can be transferred from one address to another', async() => {
+    let user1 = accounts[1]
+    let user2 = accounts[2]
+    let starId = 8
+    await instance.createStar('awesome star', starId, {from: user1});
+    await instance.transferStar(user2, starId);
+    assert.equal(await instance.ownerOf.call(starId), user2);
+  });
