@@ -1,9 +1,10 @@
 # Decentralized Star Notary Service - Starter Code
-StarNotary: 0x84732c3102ca0215e2acaea1fd839a264c26281a
-ERC-721 Token Name: "starNotary Token"
-ERC-721 Token Symbol: "SNT"
+* StarNotary: 0x84732c3102ca0215e2acaea1fd839a264c26281a
+* ERC-721 Token Name: "starNotary Token"
+* ERC-721 Token Symbol: "SNT"
 
 # Instruction
+This project is based on truffle v4.
 ## Download
 ```bash
 $ git clone https://github.com/fido2478/dapp_notary.git
@@ -15,6 +16,7 @@ Make sure you have a right configuration on truffle.config by adding rineby netw
 rinkeby: {
   provider: function() {
     return new HDWalletProvider("<12 words mnemonic>", "4dfinfura address")
+    
   },
       network_id: '4',
       gas: 4500000,
